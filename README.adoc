@@ -1,17 +1,42 @@
 = TLS Scripts
 
 The scripts in this project were created for educational purposes. They serve as an example of how to create TLS certificates and properly build truststores and keystores with them.
-It something is not clear enough, feedback is appreciated so that I can continue to improve them.
+
+If something is not clear enough, feedback is appreciated so that I can continue to improve them.
 
 == Scripts
-00-common.sh
-01-create-key.sh
-02-generate-csr.sh
-03-generate-stores.sh
-04-deploy-certs.sh
-ca
-deploy
-keys
-README.adoc
-reqs
-tmp
+
+Here's a brief description of the scripts. See the link:#usage[Usage] section below for more usage details.
+
+* `00-common.sh` - Contains global configuration used by all the other scripts. This script should not be called directly.
+* `01-create-key.sh` - Creates a primary key for the specified host.
+* `02-generate-csr.sh` - Generates a Certificate Signing Request (CSR) for the existing private key of the specified host.
+* `03-generate-stores.sh` - Generates keystores and truststores.
+* `04-deploy-certs.sh` - Deploys generated files to the specified host.
+
+== Usage
+
+The usage of all the scripts is the same:
+
+[source,shell]
+----
+./<script_name> <host_fqdn>
+----
+
+Where:
+
+* `host_fqdn` - is the fully-qualified domain name of the host for which you want to process the certificate.
+
+The scripts are designed to be called in their numeric order. The workflow is the following:
+
+. Run the `01-create-key.sh` script to create a private key for the host.
+. Run the `02-generate-csr.sh` script to create a CSR for the host.
+. Submit the contents of the CSR file to your CA to get it signed.
+. You should receive 3 files back from the CA. Save them in the following locations:
+.. The host certificate file - save this file as `reqs/<host_fqdn>-servercert.pem`
+.. The intermediate CA certificate file - save this file as `ca/int-ca-cert.pem`
+.. The root CA certificate file - save this file as `ca/root-ca-cert.pem`
+.. *NOTE*: All the files above should be in PEM base64 format. They must start and end with `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----`, respectively.
+. Run the `03-generate-stores.sh` script to create the keystores and truststores for the host.
+. Run the `04-deploy-certs.sh` script to deploy the generated files to the host.
+
