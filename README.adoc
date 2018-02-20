@@ -1,0 +1,17 @@
+= TLS Scripts
+
+The scripts in this project were created for educational purposes. They serve as an example of how to create TLS certificates and properly build truststores and keystores with them.
+It something is not clear enough, feedback is appreciated so that I can continue to improve them.
+
+== Scripts
+00-common.sh
+01-create-key.sh
+02-generate-csr.sh
+03-generate-stores.sh
+04-deploy-certs.sh
+ca
+deploy
+keys
+README.adoc
+reqs
+tmp

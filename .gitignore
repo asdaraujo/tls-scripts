@@ -1,0 +1,6 @@
+*.swp
+ca/
+deploy/
+keys/
+reqs/
+tmp/
